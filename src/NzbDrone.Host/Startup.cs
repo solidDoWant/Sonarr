@@ -5,14 +5,12 @@ using System.Net;
 using DryIoc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 using NzbDrone.Common.EnvironmentInfo;
@@ -202,7 +200,7 @@ namespace NzbDrone.Host
 
             services.AddAppAuthentication();
 
-            services.ConfigureOptions<CORSOriginConfigurator>();
+            services.ConfigureOptions<CorsOriginConfigurator>();
         }
 
         public void Configure(IApplicationBuilder app,
@@ -319,55 +317,6 @@ namespace NzbDrone.Host
             {
                 instancePolicy.PreventStartIfAlreadyRunning();
             }
-        }
-    }
-
-    public class CORSOriginConfigurator : IPostConfigureOptions<CorsOptions>
-    {
-        private readonly IConfigFileProvider _configFileProvider;
-        private readonly NLog.Logger _logger;
-
-        public CORSOriginConfigurator(IConfigFileProvider configFileProvider, NLog.Logger logger)
-        {
-            _configFileProvider = configFileProvider;
-            _logger = logger;
-        }
-
-        public void PostConfigure(string name, CorsOptions options) => PostConfigure(options);
-
-        public void PostConfigure(CorsOptions options)
-        {
-            _logger.Info("Configuring CORS. Allowed origins: {0}", _configFileProvider.AllowedCORSOrigins);
-            options.GetPolicy(VersionedApiControllerAttribute.API_CORS_POLICY).IsOriginAllowed = CorsOriginCheck;
-            options.GetPolicy("AllowGet").IsOriginAllowed = CorsOriginCheck;
-        }
-
-        protected bool CorsOriginCheck(string requestOrigin)
-        {
-            var allowedOrigin = _configFileProvider.AllowedCORSOrigins;
-            if (allowedOrigin.Equals(CorsConstants.AnyOrigin, StringComparison.Ordinal))
-            {
-                return true;
-            }
-
-            if (string.IsNullOrWhiteSpace(requestOrigin))
-            {
-                return false;
-            }
-
-            var allowedOriginAsUri = new Uri(allowedOrigin);
-            Uri requestOriginAsUri;
-            try
-            {
-                requestOriginAsUri = new Uri(requestOrigin);
-            }
-            catch (UriFormatException)
-            {
-                return false;
-            }
-
-            // Compare the scheme and authority (host + port) of the two URIs, according to RFC 6454
-            return Uri.Compare(allowedOriginAsUri, requestOriginAsUri, UriComponents.SchemeAndServer, UriFormat.Unescaped, StringComparison.OrdinalIgnoreCase) == 0;
         }
     }
 }
