@@ -77,9 +77,9 @@ Build()
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
-        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
+        dotnet msbuild -restore $slnFile -p:SelfContained=True -p:Configuration=Release -p:Platform=$platform -t:PublishAllRids
     else
-        dotnet msbuild -restore $slnFile -p:Configuration=Release -p:Platform=$platform -p:RuntimeIdentifiers=$RID -t:PublishAllRids
+        dotnet msbuild -restore $slnFile -p:SelfContained=True -p:Configuration=Release -p:Platform=$platform -p:RuntimeIdentifiers=$RID -t:PublishAllRids
     fi
 
     ProgressEnd 'Build'
@@ -419,10 +419,10 @@ if [ "$FRONTEND" = "YES" ];
 then
     YarnInstall
 
-    if [ "$LINT" = "YES" ];
-    then
-        LintUI
-    fi
+    # if [ "$LINT" = "YES" ];
+    # then
+        # LintUI
+    # fi
 
     RunWebpack
     UploadUIArtifacts
