@@ -7,10 +7,16 @@ using Sonarr.Http;
 
 namespace NzbDrone.Host
 {
-    public class CorsOriginConfigurator(IConfigFileProvider configFileProvider, NLog.Logger logger) : IPostConfigureOptions<CorsOptions>
+    public class CorsOriginConfigurator : IPostConfigureOptions<CorsOptions>
     {
-        private readonly IConfigFileProvider _configFileProvider = configFileProvider;
-        private readonly NLog.Logger _logger = logger;
+        private readonly IConfigFileProvider _configFileProvider;
+        private readonly NLog.Logger _logger;
+
+        public CorsOriginConfigurator(IConfigFileProvider configFileProvider, NLog.Logger logger)
+        {
+            _configFileProvider = configFileProvider;
+            _logger = logger;
+        }
 
         public void PostConfigure(string name, CorsOptions options) => PostConfigure(options);
 
