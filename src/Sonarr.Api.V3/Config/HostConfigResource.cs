@@ -46,6 +46,14 @@ namespace Sonarr.Api.V3.Config
         public int BackupInterval { get; set; }
         public int BackupRetention { get; set; }
         public bool TrustCgnatIpAddresses { get; set; }
+        public bool OidcEnabled { get; set; }
+        public string OidcAuthority { get; set; }
+        public string OidcClientId { get; set; }
+        public string OidcClientSecret { get; set; }
+        public string OidcScopes { get; set; }
+        public string OidcUsernameClaim { get; set; }
+        public string OidcCallbackPath { get; set; }
+        public string OidcSignedOutCallbackPath { get; set; }
     }
 
     public static class HostConfigResourceMapper
@@ -90,7 +98,15 @@ namespace Sonarr.Api.V3.Config
                 BackupFolder = configService.BackupFolder,
                 BackupInterval = configService.BackupInterval,
                 BackupRetention = configService.BackupRetention,
-                ApplicationUrl = configService.ApplicationUrl
+                ApplicationUrl = configService.ApplicationUrl,
+                OidcEnabled = configService.OidcEnabled,
+                OidcAuthority = configService.OidcAuthority,
+                OidcClientId = configService.OidcClientId,
+                OidcClientSecret = configService.OidcClientSecret,
+                OidcScopes = configService.OidcScopes,
+                OidcUsernameClaim = configService.OidcUsernameClaim,
+                OidcCallbackPath = configService.OidcCallbackPath,
+                OidcSignedOutCallbackPath = configService.OidcSignedOutCallbackPath
             };
         }
     }

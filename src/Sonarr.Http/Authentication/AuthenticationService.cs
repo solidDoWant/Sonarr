@@ -11,6 +11,7 @@ namespace Sonarr.Http.Authentication
         void LogUnauthorized(HttpRequest context);
         User Login(HttpRequest request, string username, string password);
         void Logout(HttpContext context);
+        void LogSuccess(HttpRequest request, string username);
     }
 
     public class AuthenticationService : IAuthenticationService
@@ -75,7 +76,7 @@ namespace Sonarr.Http.Authentication
             _authLogger.Warn("Auth-Failure ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
 
-        private void LogSuccess(HttpRequest context, string username)
+        public void LogSuccess(HttpRequest context, string username)
         {
             _authLogger.Debug("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username);
         }

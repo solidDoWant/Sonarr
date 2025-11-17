@@ -125,5 +125,66 @@ namespace NzbDrone.Core.Test.Configuration
 
             Mocker.GetMock<IConfigRepository>().Verify(c => c.Upsert("downloadedepisodesfolder", It.IsAny<string>()), Times.Never());
         }
+
+        [Test]
+        public void oidc_enabled_should_default_to_false()
+        {
+            Subject.OidcEnabled.Should().BeFalse();
+        }
+
+        [Test]
+        public void oidc_enabled_can_be_set()
+        {
+            Subject.OidcEnabled = true;
+            AssertUpsert("OidcEnabled", true);
+        }
+
+        [Test]
+        public void oidc_authority_should_default_to_empty()
+        {
+            Subject.OidcAuthority.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void oidc_authority_can_be_set()
+        {
+            const string authority = "https://auth.example.com";
+            Subject.OidcAuthority = authority;
+            AssertUpsert("OidcAuthority", authority);
+        }
+
+        [Test]
+        public void oidc_client_id_can_be_set()
+        {
+            const string clientId = "sonarr-client";
+            Subject.OidcClientId = clientId;
+            AssertUpsert("OidcClientId", clientId);
+        }
+
+        [Test]
+        public void oidc_client_secret_can_be_set()
+        {
+            const string clientSecret = "secret123";
+            Subject.OidcClientSecret = clientSecret;
+            AssertUpsert("OidcClientSecret", clientSecret);
+        }
+
+        [Test]
+        public void oidc_scopes_should_default_to_openid_profile_email()
+        {
+            Subject.OidcScopes.Should().Be("openid profile email");
+        }
+
+        [Test]
+        public void oidc_username_claim_should_default_to_preferred_username()
+        {
+            Subject.OidcUsernameClaim.Should().Be("preferred_username");
+        }
+
+        [Test]
+        public void oidc_callback_path_should_default_to_auth_oidc_callback()
+        {
+            Subject.OidcCallbackPath.Should().Be("/auth/oidc/callback");
+        }
     }
 }

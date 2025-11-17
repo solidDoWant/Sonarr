@@ -99,5 +99,15 @@ namespace NzbDrone.Core.Configuration
 
         CertificateValidationType CertificateValidation { get; }
         string ApplicationUrl { get; }
+
+        // OIDC
+        bool OidcEnabled { get; set; }
+        string OidcAuthority { get; set; }
+        string OidcClientId { get; set; }
+        string OidcClientSecret { get; set; }
+        string OidcScopes { get; set; }
+        string OidcUsernameClaim { get; set; }
+        string OidcCallbackPath { get; set; }
+        string OidcSignedOutCallbackPath { get; set; }
     }
 }

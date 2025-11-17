@@ -414,6 +414,54 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("TrustCgnatIpAddresses", value); }
         }
 
+        public bool OidcEnabled
+        {
+            get { return GetValueBoolean("OidcEnabled", false); }
+            set { SetValue("OidcEnabled", value); }
+        }
+
+        public string OidcAuthority
+        {
+            get { return GetValue("OidcAuthority", string.Empty); }
+            set { SetValue("OidcAuthority", value); }
+        }
+
+        public string OidcClientId
+        {
+            get { return GetValue("OidcClientId", string.Empty); }
+            set { SetValue("OidcClientId", value); }
+        }
+
+        public string OidcClientSecret
+        {
+            get { return GetValue("OidcClientSecret", string.Empty); }
+            set { SetValue("OidcClientSecret", value); }
+        }
+
+        public string OidcScopes
+        {
+            get { return GetValue("OidcScopes", "openid profile email"); }
+            set { SetValue("OidcScopes", value); }
+        }
+
+        public string OidcUsernameClaim
+        {
+            get { return GetValue("OidcUsernameClaim", "preferred_username"); }
+            set { SetValue("OidcUsernameClaim", value); }
+        }
+
+        public string OidcCallbackPath
+        {
+            get { return GetValue("OidcCallbackPath", "/auth/oidc/callback"); }
+            set { SetValue("OidcCallbackPath", value); }
+        }
+
+        public string OidcSignedOutCallbackPath
+        {
+            get { return GetValue("OidcSignedOutCallbackPath", "/auth/oidc/signedout"); }
+            set { SetValue("OidcSignedOutCallbackPath", value); }
+        }
+
         private string GetValue(string key)
         {
             return GetValue(key, string.Empty);
